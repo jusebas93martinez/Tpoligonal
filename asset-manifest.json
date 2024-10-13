@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/Tpoligonal/static/css/main.db1f98fa.chunk.css",
-    "main.js": "/Tpoligonal/static/js/main.25e146f2.chunk.js",
-    "main.js.map": "/Tpoligonal/static/js/main.25e146f2.chunk.js.map",
+    "main.css": "/Tpoligonal/static/css/main.7504e522.chunk.css",
+    "main.js": "/Tpoligonal/static/js/main.85bf5db0.chunk.js",
+    "main.js.map": "/Tpoligonal/static/js/main.85bf5db0.chunk.js.map",
     "runtime-main.js": "/Tpoligonal/static/js/runtime-main.68246cd1.js",
     "runtime-main.js.map": "/Tpoligonal/static/js/runtime-main.68246cd1.js.map",
     "static/js/2.0d071e9f.chunk.js": "/Tpoligonal/static/js/2.0d071e9f.chunk.js",
@@ -10,15 +10,15 @@
     "static/js/3.0406087f.chunk.js": "/Tpoligonal/static/js/3.0406087f.chunk.js",
     "static/js/3.0406087f.chunk.js.map": "/Tpoligonal/static/js/3.0406087f.chunk.js.map",
     "index.html": "/Tpoligonal/index.html",
-    "precache-manifest.61dbde7e600bb40f9e13bf82c3b1dc1a.js": "/Tpoligonal/precache-manifest.61dbde7e600bb40f9e13bf82c3b1dc1a.js",
+    "precache-manifest.22a596665d1a1229c38c7db3f46a7b59.js": "/Tpoligonal/precache-manifest.22a596665d1a1229c38c7db3f46a7b59.js",
     "service-worker.js": "/Tpoligonal/service-worker.js",
-    "static/css/main.db1f98fa.chunk.css.map": "/Tpoligonal/static/css/main.db1f98fa.chunk.css.map",
+    "static/css/main.7504e522.chunk.css.map": "/Tpoligonal/static/css/main.7504e522.chunk.css.map",
     "static/js/2.0d071e9f.chunk.js.LICENSE.txt": "/Tpoligonal/static/js/2.0d071e9f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.68246cd1.js",
     "static/js/2.0d071e9f.chunk.js",
-    "static/css/main.db1f98fa.chunk.css",
-    "static/js/main.25e146f2.chunk.js"
+    "static/css/main.7504e522.chunk.css",
+    "static/js/main.85bf5db0.chunk.js"
   ]
 }
