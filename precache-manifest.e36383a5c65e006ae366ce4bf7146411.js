@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "7371417d46996f08e84275b6588a8f3e",
+    "revision": "49b0363db6e42e1ad33eb16b3304d24f",
     "url": "/Tpoligonal/index.html"
   },
   {
-    "revision": "7fbc1b3ff27c5fde7d46",
-    "url": "/Tpoligonal/static/css/main.7d24b34c.chunk.css"
+    "revision": "6d792a14f2d011fe4dd4",
+    "url": "/Tpoligonal/static/css/main.d0bb0fc2.chunk.css"
   },
   {
     "revision": "9e64758407d967c5bda1",
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Tpoligonal/static/js/3.0406087f.chunk.js"
   },
   {
-    "revision": "7fbc1b3ff27c5fde7d46",
+    "revision": "6d792a14f2d011fe4dd4",
     "url": "/Tpoligonal/static/js/main.f0b2ccb6.chunk.js"
   },
   {
