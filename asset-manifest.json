@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/Tpoligonal/static/css/main.27a0eeab.chunk.css",
+    "main.css": "/Tpoligonal/static/css/main.8ad80c39.chunk.css",
     "main.js": "/Tpoligonal/static/js/main.ec236e39.chunk.js",
     "main.js.map": "/Tpoligonal/static/js/main.ec236e39.chunk.js.map",
     "runtime-main.js": "/Tpoligonal/static/js/runtime-main.68246cd1.js",
@@ -10,15 +10,15 @@
     "static/js/3.0406087f.chunk.js": "/Tpoligonal/static/js/3.0406087f.chunk.js",
     "static/js/3.0406087f.chunk.js.map": "/Tpoligonal/static/js/3.0406087f.chunk.js.map",
     "index.html": "/Tpoligonal/index.html",
-    "precache-manifest.00a6c4090bccb6fa986dcba1c95162ff.js": "/Tpoligonal/precache-manifest.00a6c4090bccb6fa986dcba1c95162ff.js",
+    "precache-manifest.ce75db1b6599d1721c29d14f150a3a51.js": "/Tpoligonal/precache-manifest.ce75db1b6599d1721c29d14f150a3a51.js",
     "service-worker.js": "/Tpoligonal/service-worker.js",
-    "static/css/main.27a0eeab.chunk.css.map": "/Tpoligonal/static/css/main.27a0eeab.chunk.css.map",
+    "static/css/main.8ad80c39.chunk.css.map": "/Tpoligonal/static/css/main.8ad80c39.chunk.css.map",
     "static/js/2.446af3a5.chunk.js.LICENSE.txt": "/Tpoligonal/static/js/2.446af3a5.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.68246cd1.js",
     "static/js/2.446af3a5.chunk.js",
-    "static/css/main.27a0eeab.chunk.css",
+    "static/css/main.8ad80c39.chunk.css",
     "static/js/main.ec236e39.chunk.js"
   ]
 }
