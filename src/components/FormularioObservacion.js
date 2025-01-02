@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GraficoPoligonalSVG from "./GraficoPoligonalSVG";
+import GraficoPoligonal from "./GraficoPoligonalSVG";
 
 const FormularioObservacion = ({ agregarObservacion }) => {
   // Estados para coordenadas y observaciones
@@ -35,6 +35,9 @@ const FormularioObservacion = ({ agregarObservacion }) => {
   // Suponiendo que tienes estos estados definidos en algún lugar del componente
   const [brazoExterno, setBrazoExterno] = useState(false); // Por defecto, el brazo es interno
   const [cierreAlturas, setCierreAlturas] = useState(0); // Estado para almacenar el cierre de alturas
+  const [descripcionInicial, setDescripcionInicial] = useState("");
+  const [descripcionVisado, setDescripcionVisado] = useState("");
+  const [coordenadas, setCoordenadas] = useState([]);
 
   const calcularCierreAlturas = (observacionesActualizadas) => {
     if (observacionesActualizadas.length === 0) {
@@ -273,7 +276,23 @@ const FormularioObservacion = ({ agregarObservacion }) => {
     setAzimutInicial(azimut);
     setDistanciaInicial(distancia);
 
-    setCoordenadasCalculadas(true); // Cambiar el estado para ocultar los inputs de coordenadas si corresponde
+    // Guardar las coordenadas con sus descripciones
+    const nuevasCoordenadas = [
+      {
+        id: descripcionInicial || "Punto Inicial",
+        norte: norteInicial,
+        este: esteInicial,
+        altura: alturaInicial,
+      },
+      {
+        id: descripcionVisado || "Punto Visado",
+        norte: norteVisado,
+        este: esteVisado,
+      },
+    ];
+    setCoordenadas(nuevasCoordenadas);
+
+    setCoordenadasCalculadas(true); // Marcar que ya se calcularon las coordenadas
   };
 
   // Función para calcular la distancia vertical zenital
@@ -726,23 +745,24 @@ const FormularioObservacion = ({ agregarObservacion }) => {
 
     return nuevasObservaciones; // Devolver las observaciones ajustadas
   };
-  const ajustarAlturasVerticales = (observacionesCompensadas) => {
+  const ajustarAlturasVerticales = (
+    observacionesCompensadas,
+    alturaInicial
+  ) => {
     let alturaAcumulada;
 
-    // Usar la altura real de la primera observación como base si el brazo es externo
     if (brazoExterno) {
       alturaAcumulada = parseFloat(observacionesCompensadas[0].alturaCalculada);
       console.log(
         `\n*** Brazo Externo: Usando altura de la primera observación como base: ${alturaAcumulada} ***`
       );
     } else {
-      // Si es brazo interno, partimos de la altura real calculada en la primera observación
-      alturaAcumulada = parseFloat(observacionesCompensadas[0].alturaCalculada);
+      // Si es brazo interno, partimos de la altura inicial proporcionada
+      alturaAcumulada = parseFloat(alturaInicial);
       console.log(
-        `\n*** Brazo Interno: Usando altura inicial de la primera observación: ${alturaAcumulada} ***`
+        `\n*** Brazo Interno: Usando altura inicial proporcionada: ${alturaAcumulada} ***`
       );
     }
-
     // Validar que la altura base sea válida
     if (isNaN(alturaAcumulada)) {
       console.error("Error: Altura inicial no válida.");
@@ -810,7 +830,7 @@ const FormularioObservacion = ({ agregarObservacion }) => {
     // Compensar las distancias verticales antes de ajustar las alturas
     const observacionesConDistanciaCompensada = nuevasObservaciones.map(
       (obs, index) => {
-        if (index === 0) {
+        if (index === 0 && brazoExterno) {
           return obs; // No compensar la primera observación si es brazo externo
         }
 
@@ -945,331 +965,306 @@ const FormularioObservacion = ({ agregarObservacion }) => {
               {/* Opción para poligonal con brazo externo */}
             </select>
           </div>
-          <h3>Coordenadas del Punto Inicial (D1)</h3>
-          <input
-            type="text"
-            placeholder="Norte (Y)"
-            value={norteInicial}
-            onChange={(e) => setNorteInicial(e.target.value)}
-            required
-            className="coordenadas-input"
-          />
-          <input
-            type="text"
-            placeholder="Este (X)"
-            value={esteInicial}
-            onChange={(e) => setEsteInicial(e.target.value)}
-            required
-            clas
-            sName="coordenadas-input"
-          />
-          {/* Nuevo input para la altura inicial */}
-          <input
-            type="number"
-            placeholder="Altura (m)"
-            value={alturaInicial}
-            onChange={(e) => setAlturaInicial(e.target.value)} // Actualizar el estado de la altura inicial
-            required
-            className="coordenadas-input"
-          />
-          <h3>Coordenadas del Punto Visado (D2)</h3>
-          <input
-            type="text"
-            placeholder="Norte (Y)"
-            value={norteVisado}
-            onChange={(e) => setNorteVisado(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Este (X)"
-            value={esteVisado}
-            onChange={(e) => setEsteVisado(e.target.value)}
-            required
-          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center", // Esto centrará el formulario horizontalmente
+              alignItems: "center",
+              height: "63vh", // Ajusta el alto del contenedor para que ocupe toda la pantalla
+              flexDirection: "column", // Coloca los elementos uno debajo del otro
+            }}
+          >
+            {/* Sección del Punto Inicial */}
+            <h3>ID y Coordenadas del Punto Inicial</h3>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center", // Centra el contenido horizontalmente
+                alignItems: "center", // (Opcional) Centra el contenido verticalmente
+                marginBottom: "15px",
+                width: "100%",
+                maxWidth: "400px",
+                flexDirection: "column", // (Opcional) Para que los elementos se apilen verticalmente
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Descripción del Punto Inicial"
+                value={descripcionInicial}
+                onChange={(e) => setDescripcionInicial(e.target.value)}
+                className="coordenadas-input"
+                style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+              />
+              <input
+                type="number"
+                placeholder="Norte (Y)"
+                value={norteInicial}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[0-9]*[.,]?[0-9]*$/.test(value)) {
+                    setNorteInicial(value);
+                  }
+                }}
+                required
+                className="coordenadas-input"
+                style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+              />
+              <input
+                type="number"
+                placeholder="Este (X)"
+                value={esteInicial}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[0-9]*[.,]?[0-9]*$/.test(value)) {
+                    setEsteInicial(value);
+                  }
+                }}
+                required
+                className="coordenadas-input"
+                style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+              />
+              <input
+                type="number"
+                placeholder="Altura (m)"
+                value={alturaInicial}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[0-9]*[.,]?[0-9]*$/.test(value)) {
+                    setAlturaInicial(value);
+                  }
+                }}
+                required
+                className="coordenadas-input"
+                style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+              />
+            </div>
+            {/* Sección del Punto Visado */}
+            <h3>Descripción y Coordenadas del Punto Visado</h3>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center", // Centra el contenido horizontalmente
+                alignItems: "center", // (Opcional) Centra el contenido verticalmente
+                marginBottom: "15px",
+                width: "100%",
+                maxWidth: "400px",
+                flexDirection: "column", // (Opcional) Para que los elementos se apilen verticalmente
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Descripción del Punto Visado"
+                value={descripcionVisado}
+                onChange={(e) => setDescripcionVisado(e.target.value)}
+                className="coordenadas-input"
+                style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+              />
+              <input
+                type="number"
+                placeholder="Norte (Y)"
+                value={norteVisado}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[0-9]*[.,]?[0-9]*$/.test(value)) {
+                    setNorteVisado(value);
+                  }
+                }}
+                required
+                className="coordenadas-input"
+                style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+              />
+              <input
+                type="number"
+                placeholder="Este (X)"
+                value={esteVisado}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[0-9]*[.,]?[0-9]*$/.test(value)) {
+                    setEsteVisado(value);
+                  }
+                }}
+                required
+                className="coordenadas-input"
+                style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+              />
+            </div>
+          </div>
           <button type="button" onClick={calcularAzimutYAlmacenarValores}>
             Calcular Azimut y Distancia
           </button>
         </>
       ) : (
         <>
+          {/* Tabla de Coordenadas Iniciales */}
+          <div className="tabla-coordenadas">
+            <h3>Coordenadas Iniciales</h3>
+            <table border="1" style={{ marginTop: "10px", width: "100%" }}>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Norte (Y)</th>
+                  <th>Este (X)</th>
+                  <th>Altura (m)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {coordenadas.map((coord, index) => (
+                  <tr key={index}>
+                    <td>{coord.id}</td>
+                    <td>{coord.norte}</td>
+                    <td>{coord.este}</td>
+                    <td>{coord.altura || "N/A"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <h3 style={{ margin: "5px 0" }}>
             Azimut Inicial: {convertirDecimalAGMS(azimutInicial)}
           </h3>
-          <h3 style={{ margin: "5px 0" }}>
-            Distancia Inicial: {distanciaInicial} metros
+          <h3 style={{ margin: "5px 0" }}>Distancia: {distanciaInicial}m</h3>
+          <h3 className="header" style={{ color: "black" }}>
+            Ingresar Observación
           </h3>
-          <h3 style={{ margin: "5px 0" }}>Ingresar Observación</h3>
-
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "20px",
-            }}
-          >
-            <div
-              style={{
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100px",
-              }}
-            >
-              <h4>
-                ID
-                <br />
-                Obs
-              </h4>
+          <div className="row-container">
+            <div className="input-group">
+              <h4 className="header">ID Obs</h4>
               <input
                 type="text"
                 placeholder="ID"
                 value={idObservacion}
                 onChange={(e) => setIdObservacion(e.target.value)}
-                required
-                style={{
-                  width: "80px", // Ancho del input
-                  textAlign: "center", // Texto centrado dentro del input
-                  display: "block", // Asegura que el input ocupe todo el ancho del contenedor
-                  margin: "0 auto", // Centra el input dentro del contenedor
-                }}
+                className="input-field"
               />
             </div>
 
-            <div
-              style={{
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "150px",
-              }}
-            >
-              <h4>
-                Ángulo
-                <br />
-                Horizontal
-              </h4>
+            <div className="input-group">
+              <h4 className="header">Ángulo Horizontal</h4>
               <input
                 type="number"
                 placeholder="Grados"
                 value={gradosH}
-                onChange={(e) => setGradosH(Number(e.target.value))} // Asegurarse de convertir a número
-                required
-                style={{
-                  width: "60px",
-                  textAlign: "center",
-                  display: "block",
-                  margin: "0 auto",
-                }}
+                onChange={(e) => setGradosH(Number(e.target.value))}
+                className="input-field"
               />
               <input
                 type="number"
                 placeholder="Minutos"
                 value={minutosH}
-                onChange={(e) => setMinutosH(Number(e.target.value))} // Convertir a número
-                required
-                style={{
-                  width: "60px",
-                  textAlign: "center",
-                  display: "block",
-                  margin: "0 auto",
-                }}
+                onChange={(e) => setMinutosH(Number(e.target.value))}
+                className="input-field"
               />
               <input
                 type="number"
                 placeholder="Segundos"
                 value={segundosH}
-                onChange={(e) => setSegundosH(Number(e.target.value))} // Convertir a número
-                required
-                style={{
-                  width: "60px",
-                  textAlign: "center",
-                  display: "block",
-                  margin: "0 auto",
-                }}
+                onChange={(e) => setSegundosH(Number(e.target.value))}
+                className="input-field"
               />
             </div>
 
-            <div
-              style={{
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "150px",
-              }}
-            >
-              <h4>
-                Ángulo
-                <br />
-                Vertical
-              </h4>
+            <div className="input-group">
+              <h4 className="header">Ángulo Vertical</h4>
               <input
                 type="number"
                 placeholder="Grados"
                 value={gradosV}
-                onChange={(e) => setGradosV(e.target.value)}
-                required
-                style={{
-                  width: "60px",
-                  textAlign: "center",
-                  display: "block",
-                  margin: "0 auto",
-                }}
+                onChange={(e) => setGradosV(Number(e.target.value))}
+                className="input-field"
               />
               <input
                 type="number"
                 placeholder="Minutos"
                 value={minutosV}
-                onChange={(e) => setMinutosV(e.target.value)}
-                required
-                style={{
-                  width: "60px",
-                  textAlign: "center",
-                  display: "block",
-                  margin: "0 auto",
-                }}
+                onChange={(e) => setMinutosV(Number(e.target.value))}
+                className="input-field"
               />
               <input
                 type="number"
                 placeholder="Segundos"
                 value={segundosV}
-                onChange={(e) => setSegundosV(e.target.value)}
-                required
-                style={{
-                  width: "60px",
-                  textAlign: "center",
-                  display: "block",
-                  margin: "0 auto",
-                }}
+                onChange={(e) => setSegundosV(Number(e.target.value))}
+                className="input-field"
               />
             </div>
 
-            <div
-              style={{
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100px",
-              }}
-            >
-              <h4>
-                Distancia
-                <br />
-                (Metros)
-              </h4>
+            <div className="input-group">
+              <h4 className="header">Distancia (Metros)</h4>
               <input
                 type="number"
                 placeholder="Distancia (m)"
                 value={distanciaObservada}
                 onChange={(e) => setDistanciaObservada(e.target.value)}
-                required
-                style={{
-                  width: "80px",
-                  textAlign: "center",
-                  display: "block",
-                  margin: "0 auto",
-                }}
+                className="input-field"
               />
             </div>
 
-            <div
-              style={{
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "120px",
-              }}
-            >
-              <h4>
-                Altura
-                <br />
-                Instrumental
-              </h4>
+            <div className="input-group">
+              <h4 className="header">Altura Instrumental</h4>
               <input
                 type="number"
                 placeholder="Altura Instrumental (m)"
                 value={alturaInstrumental}
                 onChange={(e) => setAlturaInstrumental(e.target.value)}
-                required
-                style={{
-                  width: "80px",
-                  textAlign: "center",
-                  display: "block",
-                  margin: "0 auto",
-                }}
+                className="input-field"
               />
             </div>
 
-            <div
-              style={{
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "120px",
-              }}
-            >
-              <h4>
-                Altura
-                <br />
-                Prisma
-              </h4>
+            <div className="input-group">
+              <h4 className="header">Altura Prisma</h4>
               <input
                 type="number"
                 placeholder="Altura Prisma (m)"
                 value={alturaPrisma}
                 onChange={(e) => setAlturaPrisma(e.target.value)}
-                required
-                style={{
-                  width: "80px",
-                  textAlign: "center",
-                  display: "block",
-                  margin: "0 auto",
-                }}
+                className="input-field"
               />
             </div>
           </div>
-
           <button type="button" onClick={agregarNuevaObservacion}>
             Agregar Observación
           </button>
-
-          {/* Mostrar el nuevo azimut calculado si está disponible */}
-          {nuevoAzimut && (
-            <h3>Nuevo Azimut: {convertirDecimalAGMS(nuevoAzimut)}</h3>
-          )}
-
           {/* Tabla de observaciones */}
           {observaciones.length > 0 && (
             <>
+              {/* Primera tabla */}
               <table border="1" cellPadding="10" cellSpacing="1">
                 <thead>
                   <tr>
                     <th className="id">ID</th>
-                    <th className="angulo">Ángulo Horizontal</th>
-                    <th className="angulo">Ángulo Vertical</th>
+                    <th className="angulo">Ángulo H</th>
+                    <th className="angulo">Ángulo V</th>
                     <th className="distancia">Distancia</th>
                     <th className="angulo">Azimut</th>
-                    <th className="altura">Altura Ins (m)</th>
-                    <th className="altura">Altura Pri (m)</th>
-                    <th className="proyeccion">Proyección Norte</th>
-                    <th className="proyeccion">Proyección Este</th>
+                    <th className="altura">Alt Ins</th>
+                    <th className="altura">Alt Pri</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {observaciones.map((obs, index) => (
+                    <tr key={index}>
+                      <td>{obs.id}</td>
+                      <td>{obs.anguloHorizontal}</td>
+                      <td>{obs.anguloVertical}</td>
+                      <td>{obs.distancia}m</td>
+                      <td>{obs.azimut}</td>
+                      <td>{obs.alturaInstrumental}m</td>
+                      <td>{obs.alturaPrisma}m</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <br /> {/* Espacio entre las dos tablas */}
+              {/* Segunda tabla */}
+              <table border="1" cellPadding="10" cellSpacing="1">
+                <thead>
+                  <tr>
+                    <th className="id">ID</th> {/* Agregar la columna ID */}
+                    <th className="proyeccion">Proy Norte</th>
+                    <th className="proyeccion">Proy Este</th>
                     <th className="coordenada">Norte</th>
                     <th className="coordenada">Este</th>
-                    <th className="altura">Altura </th>{" "}
-                    {/* Nueva columna para la altura calculada */}
+                    <th className="altura">Altura</th> {/* Nueva columna */}
                   </tr>
                 </thead>
                 <tbody>
@@ -1286,7 +1281,7 @@ const FormularioObservacion = ({ agregarObservacion }) => {
                     const alturaCalculada = calcularAlturaObservacion(
                       index === 0
                         ? alturaInicial
-                        : observaciones[index - 1].alturaCalculada, // Usamos la altura inicial para la primera observación, y luego la altura calculada anterior
+                        : observaciones[index - 1].alturaCalculada,
                       distanciaVertical,
                       obs.alturaInstrumental,
                       obs.alturaPrisma
@@ -1297,25 +1292,18 @@ const FormularioObservacion = ({ agregarObservacion }) => {
 
                     return (
                       <tr key={index}>
-                        <td>{obs.id}</td>
-                        <td>{obs.anguloHorizontal}</td>
-                        <td>{obs.anguloVertical}</td>
-                        <td>{obs.distancia} m</td>
-                        <td>{obs.azimut}</td>
-                        <td>{obs.alturaInstrumental} m</td>
-                        <td>{obs.alturaPrisma} m</td>
-                        <td>{obs.proyeccionNorte} m</td>
-                        <td>{obs.proyeccionEste} m</td>
+                        <td>{obs.id}</td> {/* Mostrar el ID */}
+                        <td>{obs.proyeccionNorte}m</td>
+                        <td>{obs.proyeccionEste}m</td>
                         <td>{obs.nuevoNorte}</td>
                         <td>{obs.nuevoEste}</td>
-                        <td>{alturaCalculada} </td>{" "}
+                        <td>{alturaCalculada}</td>{" "}
                         {/* Mostrar la altura calculada */}
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
-
               {/* Botón para borrar la última observación */}
               <button type="button" onClick={borrarUltimaObservacion}>
                 Borrar Última Observación
@@ -1372,42 +1360,57 @@ const FormularioObservacion = ({ agregarObservacion }) => {
           <button type="button" onClick={compensarPoligonal}>
             Compensar Poligonal
           </button>
-
-          {/* Tabla de observaciones compensadas */}
           {observacionesCompensadas.length > 0 && (
             <>
               <h3>Observaciones Compensadas</h3>
+              {/* Primera tabla */}
               <table border="1">
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Ángulo Horizontal Compensado</th>
-                    <th>Proyección Norte Compensada</th>
-                    <th>Proyección Este Compensada</th>
+                    <th>Ángulo H Compensado</th>
+                    <th>Proyección N Compensada</th>
+                    <th>Proyección E Compensada</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {observacionesCompensadas.map((obs, index) => (
+                    <tr key={index}>
+                      <td>{obs.id}</td>
+                      <td>{obs.anguloHorizontalCompensado}</td>
+                      <td>{obs.proyeccionNorteCompensada}m</td>
+                      <td>{obs.proyeccionEsteCompensada}m</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <br />
+              {/* Segunda tabla */}
+              <table border="1">
+                <thead>
+                  <tr>
+                    <th>ID</th>
                     <th>Norte Ajustado</th>
                     <th>Este Ajustado</th>
-                    <th>Altura Compensada</th>{" "}
-                    {/* Asegúrate de tener esta columna */}
+                    <th>Altura Compensada</th>
                   </tr>
                 </thead>
                 <tbody>
                   {observacionesCompensadas.map((obs, index) => {
-                    // Recalcular las coordenadas ajustadas con las proyecciones compensadas
                     const { nuevoNorteAjustado, nuevoEsteAjustado } =
                       recalcularCoordenadasAjustadas(
                         index === 0
-                          ? norteInicial // Para la primera observación usamos la coordenada inicial
+                          ? norteInicial
                           : observacionesCompensadas[index - 1]
-                              .nuevoNorteAjustado, // Para las demás usamos la coordenada ajustada anterior
+                              .nuevoNorteAjustado,
                         index === 0
                           ? esteInicial
                           : observacionesCompensadas[index - 1]
-                              .nuevoEsteAjustado, // Coordenada Este ajustada anterior
+                              .nuevoEsteAjustado,
                         obs.proyeccionNorteCompensada,
                         obs.proyeccionEsteCompensada
                       );
 
-                    // Actualizamos las coordenadas ajustadas en el objeto de observación compensada
                     observacionesCompensadas[index].nuevoNorteAjustado =
                       nuevoNorteAjustado;
                     observacionesCompensadas[index].nuevoEsteAjustado =
@@ -1416,9 +1419,6 @@ const FormularioObservacion = ({ agregarObservacion }) => {
                     return (
                       <tr key={index}>
                         <td>{obs.id}</td>
-                        <td>{obs.anguloHorizontalCompensado}</td>
-                        <td>{obs.proyeccionNorteCompensada} m</td>
-                        <td>{obs.proyeccionEsteCompensada} m</td>
                         <td>{nuevoNorteAjustado}</td>
                         <td>{nuevoEsteAjustado}</td>
                         <td>
@@ -1431,11 +1431,24 @@ const FormularioObservacion = ({ agregarObservacion }) => {
                   })}
                 </tbody>
               </table>
-              {/* Añadir el gráfico aquí */}
 
-              <GraficoPoligonalSVG
-                observacionesCompensadas={observacionesCompensadas}
-              />
+              {/* Gráfico */}
+              <div className="app-container">
+                <GraficoPoligonal
+                  observacionesCompensadas={observacionesCompensadas}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "10px",
+                    right: "10px",
+                    fontSize: "12px",
+                    color: "gray",
+                  }}
+                >
+                  By Sebastian Martinez
+                </div>
+              </div>
             </>
           )}
         </>

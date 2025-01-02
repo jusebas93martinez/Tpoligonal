@@ -1,3 +1,5 @@
+/* Estilos globales */
+html,
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -5,68 +7,96 @@ body {
   color: #333;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; /* Asegura que padding se incluya en el tamaño total */
+  overflow-x: hidden; /* Evita desplazamiento horizontal no deseado */
 }
 
+/* Contenedor principal */
+body {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: flex-start; /* Alinea al inicio (top) verticalmente */
+  min-height: 100vh; /* Asegura que ocupe toda la altura disponible */
+  padding-top: 50px; /* Espacio desde la parte superior */
+  padding: 1px; /* Padding adicional para los lados */
+  box-sizing: border-box;
+}
+
+/* Estilos de la aplicación */
 .App {
   width: 100%;
-  max-width: 1000px; /* Limitar el ancho del formulario */
-  padding: 20px;
-  box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+  max-width: 750px; /* Ajusta el ancho máximo del formulario */
+  padding: 2px;
+  background-color: white;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para un efecto moderno */
+  box-sizing: border-box;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #1c1c1e;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
+/* Formulario */
 form {
   background: #fff;
-  padding: 0px;
+  padding: 10px;
   border-radius: 18px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 100%; /* Asegura que el formulario ocupe todo el ancho disponible */
+  width: 100%; /* Asegurar que el formulario ocupe todo el ancho disponible */
   margin-bottom: 20px;
+  box-sizing: border-box; /* Incluir padding en el ancho */
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   color: #0071e3;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin: 2px 0;
+  text-align: center;
 }
 
+/* Inputs y Selects */
 input,
 select {
-  display: block;
-  width: 100%; /* Ajustar a todo el ancho del formulario */
-  margin-bottom: 05px;
-  padding: 15px;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
   font-size: 1rem;
-  border-radius: 10px;
   border: 1px solid #d1d1d6;
-  background-color: #f2f2f7;
+  border-radius: 8px;
+  background-color: #f7f7f9;
+  box-sizing: border-box;
+}
+
+.button-container {
+  width: 100%; /* Asegura que el contenedor ocupe el 100% del espacio disponible */
+  text-align: center; /* Opcional: alinea el contenido centrado si es necesario */
 }
 
 button {
   background-color: #0071e3;
   color: white;
-  padding: 09px;
+  padding: 10px;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  width: 100%; /* Botón de ancho completo */
+  width: 60%; /* El botón ocupa el 60% del ancho del contenedor */
+  margin: 10px auto; /* Centrado horizontalmente */
+  display: block; /* Asegura que el botón sea tratado como un bloque para centrado */
 }
 
 button:hover {
   background-color: #005bb5;
 }
 
+/* Mejor visibilidad de listas */
 ul {
   list-style: none;
   padding: 0;
@@ -84,95 +114,165 @@ ul li p {
   margin: 0;
 }
 
-@media (max-width: 600px) {
-  .App {
-    max-width: 100%;
-    padding: 10px;
-  }
-
-  input,
-  select,
-  button {
-    font-size: 0.9rem;
-  }
-}
+/* Canvas centrado */
 .centrar-canvas {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px; /* Opcional: para un espacio debajo del canvas */
-}
-/* Ajustar el tamaño de los inputs y alinearlos correctamente */
-.formulario-observacion {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px; /* Añadir espacio entre elementos */
+  margin-bottom: 10px;
 }
 
-.formulario-observacion h4 {
-  margin-bottom: 5px; /* Espacio entre el título y los inputs */
-}
-
+/* Inputs del formulario - Mejora estética */
 .formulario-observacion input {
-  width: 100px; /* Ajustar el ancho de los inputs */
-  padding: 10px; /* Añadir espacio dentro del input */
-  margin-right: 20px; /* Añadir espacio entre los inputs */
-}
-/* Estilos para los encabezados de la tabla */
-th.angulo {
-  width: 200px;
-}
-
-th.distancia,
-th.altura {
-  width: 100px;
-}
-/* Centrar el texto en los encabezados (th) */
-th {
-  text-align: center;
-  vertical-align: middle; /* Opcional: también puedes centrar verticalmente */
+  width: 100%; /* Ajuste al ancho del contenedor */
+  max-width: 300px; /* Limita el ancho máximo */
+  padding: 1px 1px; /* Mejor espacio interno */
+  font-size: 1rem;
+  border: 1px solid #ccc; /* Borde ligero */
+  border-radius: 8px; /* Bordes redondeados */
+  background-color: #f7f7f9; /* Fondo claro */
+  transition: all 0.3s ease; /* Efecto de transición suave */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra interna */
 }
 
+/* Efecto al hacer foco en los inputs */
+.formulario-observacion input:focus {
+  border-color: #0071e3; /* Cambia el color del borde al hacer foco */
+  outline: none; /* Elimina el borde por defecto del navegador */
+  box-shadow: 0 0 5px rgba(0, 113, 227, 0.5); /* Sombra azul clara */
+  background-color: white; /* Fondo blanco al hacer foco */
+}
+
+/* Celdas y encabezados de la tabla */
+th,
 td {
-  font-size: 12px; /* Ajusta el tamaño del texto */
-  line-height: 15px; /* Ajusta la altura de línea para controlar el espacio vertical */
-  padding: 3px; /* Ajusta el espacio interno de las celdas (padding) */
-  text-align: center; /* Centrar horizontalmente el contenido */
-  vertical-align: middle; /* Centrar verticalmente el contenido */
+  padding: 5px;
+  border: 1px solid #d1d1d6;
+  font-size: 1rem;
+  text-align: center;
 }
 
+/* Input de coordenadas */
 .coordenadas-input {
-  width: 300px; /* Ajusta el ancho del input según lo que necesites */
-  padding: 10px; /* Espacio interno del input */
-  font-size: 16px; /* Tamaño de la fuente dentro del input */
+  width: 100%;
+  max-width: 400px;
+  padding: 50px;
+  font-size: 1rem;
 }
 
-/* Ajusta el espaciado de las secciones */
+/* Ajustes para secciones */
 .resumen-angular,
 .totales,
 .precision-poligonal {
-  margin: 0;
-  padding: 0;
-  text-align: center; /* Si quieres que el contenido esté centrado */
+  margin: 10px 0;
+  text-align: center;
 }
 
 .resumen-angular p,
 .totales p,
 .precision-poligonal p {
-  margin: 5px 0; /* Ajusta el margen entre párrafos */
+  margin: 5px 0;
 }
 
 h3 {
-  margin: 1px 0; /* Espacio reducido entre títulos */
+  margin: 5px 0;
 }
 
-/* Elimina cualquier espacio en blanco innecesario entre los bloques */
+/* Estilo para la tabla: centrado y ancho completo */
 table {
-  margin-bottom: 20x; /* Ajustar el espacio entre la tabla y el contenido siguiente */
+  width: 100%; /* La tabla ocupará todo el ancho del contenedor */
+  margin: 10px 0; /* Espacio alrededor de la tabla */
+  border-collapse: collapse; /* Unifica los bordes de la tabla */
+  text-align: center;
 }
 
-/* Opcional: puedes ajustar el tamaño de los textos si es necesario */
 p {
-  font-size: 1rem; /* Ajusta el tamaño si es muy pequeño */
+  font-size: 1rem;
+}
+
+/* Estilo del encabezado */
+.header {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+}
+
+/* Contenedor de filas */
+.row-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* Grupo de inputs */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* Estilo de los inputs */
+.input-field {
+  width: 10px;
+  max-width: 10%;
+  padding: 6px;
+  font-size: 1rem;
+  border: 1px solid #d1d1d6;
+  border-radius: 8px;
+  background-color: #fff;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Espacio entre los headers y sus inputs */
+.input-group h4 {
+  margin: 0;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Alinear la tabla dentro de su contenedor */
+.table-container {
+  width: 50%; /* Ocupa todo el ancho disponible */
+  display: flex;
+  justify-content: center; /* Centra la tabla horizontalmente */
+}
+/* Cambiar tamaño del texto en encabezados de la tabla */
+table th {
+  font-size: 0.7rem; /* Tamaño de letra para encabezados */
+  font-weight: bold; /* Hacer el texto en negrita */
+  text-align: center; /* Alinear texto al centro */
+  padding: 2px;
+}
+
+/* Cambiar tamaño del texto en celdas de la tabla */
+table td {
+  font-size: 0.6rem; /* Tamaño de letra para celdas */
+  text-align: center; /* Alinear texto al centro */
+  padding: 2px; /* Ajuste del espacio interior */
+}
+
+/* Si deseas que toda la tabla tenga un estilo más compacto */
+table {
+  font-family: Arial, sans-serif; /* Cambiar la fuente de la tabla si lo deseas */
+}
+/* Contenedor principal de la aplicación */
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: column; /* Asegura que los elementos estén apilados verticalmente */
+}
+
+/* Estilo para el SVG o el gráfico */
+svg {
+  border: 2px solid black;
+  display: block;
 }
